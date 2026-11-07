@@ -110,3 +110,42 @@ input:focus, select:focus { outline: none; border-color: #d90429; }
     color: #ccc;
     line-height: 1.5;
 }
+
+/* =========================================
+   📱 ADAPTATIONS POUR LE MOBILE
+========================================= */
+
+/* Répartir l'application sur tout l'écran */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Centrer le contenu des écrans */
+body > div:not(.hidden) {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 20px;
+}
+
+/* Rendre le menu plus massif et centré */
+#menu {
+    justify-content: center;
+}
+
+.btn-menu {
+    width: 90%;
+    max-width: 350px;
+    padding: 20px;
+    font-size: 1.3em;
+    margin: 15px auto;
+    display: block;
+}
+
+/* Éviter que les règles ne soient coupées si elles sont trop longues */
+#rules-section {
+    justify-content: flex-start;
+}
