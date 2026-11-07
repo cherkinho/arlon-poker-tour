@@ -227,34 +227,67 @@ function generateDebtHTML(playersArray, containerId) {
     document.getElementById(containerId).innerHTML = resultsHtml;
 }
 
-// Chrono basique
+// Chrono basé sur l'horloge du téléphone (Anti-mise en veille)
+let targetEndTime = 0;
+
 function updateInterface() {
     document.getElementById('current-blinds-display').innerText = `Blindes : ${blindLevels[currentLevel]}`;
     document.getElementById('next-blinds-display').innerText = blindLevels[currentLevel + 1] || "Fin";
-    let m = Math.floor(timeRemaining / 60).toString().padStart(2, '0');
-    let s = (timeRemaining % 60).toString().padStart(2, '0');
+    
+    // On empêche l'affichage d'un temps négatif
+    let displayTime = Math.max(0, timeRemaining);
+    let m = Math.floor(displayTime / 60).toString().padStart(2, '0');
+    let s = (displayTime % 60).toString().padStart(2, '0');
     document.getElementById('time-display').innerText = `${m}:${s}`;
 }
 
 function toggleTimer() {
     let btn = document.getElementById('play-pause-btn');
     if (isRunning) {
+        // Mode Pause
         clearInterval(timerInterval);
-        btn.innerText = "▶️ Reprendre"; isRunning = false;
+        btn.innerText = "▶️ Reprendre"; 
+        isRunning = false;
     } else {
+        // Mode Lecture (on calcule l'heure exacte de fin)
+        targetEndTime = Date.now() + (timeRemaining * 1000);
+        
         timerInterval = setInterval(() => {
-            if (timeRemaining > 0) { timeRemaining--; updateInterface(); }
-            else { alert("🚨 BLINDES UP !"); nextLevel(); }
-        }, 1000);
-        btn.innerText = "⏸️ Pause"; isRunning = true;
+            let now = Date.now();
+            // On calcule l'écart entre l'heure de fin prévue et l'heure actuelle
+            timeRemaining = Math.round((targetEndTime - now) / 1000);
+            
+            if (timeRemaining > 0) { 
+                updateInterface(); 
+            } else { 
+                // Le temps est écoulé
+                timeRemaining = 0;
+                updateInterface();
+                alert("🚨 BLINDES UP !"); 
+                nextLevel(); 
+            }
+        }, 1000); // Mise à jour de l'affichage toutes les secondes
+        
+        btn.innerText = "⏸️ Pause"; 
+        isRunning = true;
     }
 }
 
 function nextLevel() {
     if (currentLevel < blindLevels.length - 1) {
-        currentLevel++; timeRemaining = levelDuration; updateInterface();
+        currentLevel++; 
+        timeRemaining = levelDuration; 
+        
+        if (isRunning) {
+            // Si le chrono tourne déjà, on recalcule la nouvelle heure de fin
+            targetEndTime = Date.now() + (timeRemaining * 1000);
+        }
+        
+        updateInterface();
     } else {
-        clearInterval(timerInterval); isRunning = false; alert("Dernier niveau !");
+        clearInterval(timerInterval); 
+        isRunning = false; 
+        alert("Dernier niveau !");
     }
 }
 
