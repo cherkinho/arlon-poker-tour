@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Poker Arlon Hold'em</title>
+    
+    <!-- Lignes PWA pour l'application mobile -->
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#d90429">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Le logo affiché sur la page d'accueil -->
+    <img src="logo.png" alt="Logo Arlon Poker Tour" style="width: 120px; height: 120px; border-radius: 50%; margin-top: 15px; box-shadow: 0 0 15px rgba(217, 4, 41, 0.5);">
+    
+    <h1>♠️ Poker Arlon Hold'em ♥️</h1>
+    
+    <!-- Écran 1 : Menu Principal -->
+    <div id="menu">
+        <h2>Choisir le type de partie</h2>
+        <button class="btn-menu" onclick="showSection('setup-cash')">💰 Cash Game</button>
+        <button class="btn-menu" onclick="showSection('setup-tournament')">⏱️ Tournoi</button>
+        <button class="btn-menu" onclick="showSection('rules-section')" style="border-color: #f7b500; color: #f7b500;">📜 Règles du jeu</button>
+    </div>
+
+    <!-- La suite de ton code (règles, cash game, etc.) reste ici en dessous... -->
+    <!-- Écran : Règles du jeu (NOUVEAU) -->
+    <div id="rules-section" class="hidden">
+        <button class="btn-back" onclick="showSection('menu')">⬅️ Retour</button>
+        <h2>Règles & Variantes</h2>
+
+        <div class="rules-container">
+            <h3>📖 Les Bases du Texas Hold'em</h3>
+            <p style="text-align: left; padding: 0 15px;">
+                Chaque joueur reçoit 2 cartes privatives. 5 cartes communes sont dévoilées au centre (Flop, Turn, River). 
+                Le but : faire la meilleure combinaison de 5 cartes.<br><br>
+                <b>Ordre des mains :</b> Carte haute < Paire < Double Paire < Brelan < Quinte (Suite) < Couleur (Flush) < Full House < Carré < Quinte Flush < Quinte Flush Royale.
+            </p>
+
+            <h3 style="color: #f7b500; margin-top: 30px;">🔥 Règles Spéciales (Cash Game)</h3>
+            
+            <div class="rule-card">
+                <h4>🃏 Le 7-2 (The 7-2 Game)</h4>
+                <p>Si un joueur gagne le coup (que ce soit à l'abattage ou en faisant coucher tout le monde) en montrant qu'il avait <b>7 et 2</b> dans les mains (la pire main du poker), <b>tous</b> les autres joueurs à table lui doivent immédiatement 1 blinde (ou une somme définie à l'avance).</p>
+            </div>
+
+            <div class="rule-card">
+                <h4>👻 Le Fantôme (The Ghost)</h4>
+                <p>Une main supplémentaire est distribuée face cachée à un "joueur imaginaire". À la fin du coup, le joueur qui remporte le pot doit affronter la main du Fantôme. On retourne les cartes du Fantôme : s'il bat le joueur, <b>le pot reste au milieu</b> pour la main suivante !</p>
+            </div>
+
+            <div class="rule-card">
+                <h4>🧍 Le Jeu Debout (Stand-Up Game)</h4>
+                <p>Au top départ, tous les joueurs sont considérés comme "debout". Dès qu'un joueur gagne un pot, il est "sauvé" (il s'assied). Le jeu continue jusqu'à ce qu'il ne reste plus <b>qu'un seul joueur</b> qui n'a gagné aucun pot. Ce dernier joueur doit payer une pénalité (ex: 1 blinde) à chaque joueur à table.</p>
+            </div>
+
+            <div class="rule-card">
+                <h4>💣 Le Bomb Pot (Pour pimenter l'action)</h4>
+                <p>Une fois par heure (ou quand quelqu'un le propose), on annonce un Bomb Pot. <b>Il n'y a pas de tour de mise pré-flop</b>. Tous les joueurs mettent d'office 5 blindes (ou un montant convenu) au milieu. Le croupier distribue directement le Flop (les 3 premières cartes), et l'action commence à partir de là pour un pot déjà énorme !</p>
+            </div>
+            
+            <div class="rule-card">
+                <h4>🔄 Le Show One, Show All</h4>
+                <p>Si tu bluffes et que tout le monde se couche, mais que tu décides de montrer tes cartes à ton voisin de droite pour te la péter, la règle s'applique : tu dois les montrer à toute la table. Pas de secrets !</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Écran 2 : Cash Game (Le reste de ton code original reste identique à partir d'ici) -->
+    <div id="setup-cash" class="hidden">
+        <button class="btn-back" onclick="showSection('menu')">⬅️ Retour</button>
+        <h2>Cash Game - La Table</h2>
+        
+        <div class="blinds-box">
+            <label>Blindes : </label>
+            <select id="blinds-select">
+                <option value="0.01/0.02">0.01 € / 0.02 €</option>
+                <option value="0.10/0.20">0.10 € / 0.20 €</option>
+                <option value="0.25/0.50">0.25 € / 0.50 €</option>
+            </select>
+        </div>
+        
+        <div id="players-list"></div>
+        
+        <div class="input-group">
+            <input type="text" id="new-player-name" placeholder="Nom du joueur">
+            <input type="number" id="new-player-buyin" placeholder="Montant posé (€)">
+            <button class="btn-action" onclick="addPlayer()">Ajouter / Recaver</button>
+        </div>
+        
+        <button class="btn-primary" onclick="endGame()">🚨 Faire les comptes</button>
+    </div>
+
+    <!-- Écran 3 : Fin de Cash Game -->
+    <div id="end-game" class="hidden">
+        <h2>Les Comptes (Cash Game)</h2>
+        <div id="final-stacks"></div>
+        <button class="btn-primary" onclick="calculatePayouts()">💸 Calculer les dettes</button>
+        <div id="results"></div>
+        <button class="btn-action" onclick="location.reload()" style="margin-top: 20px;">Menu Principal</button>
+    </div>
+
+    <!-- Écran 4 : Configuration Tournoi -->
+    <div id="setup-tournament" class="hidden">
+        <button class="btn-back" onclick="showSection('menu')">⬅️ Retour</button>
+        <h2>Tournoi - Inscriptions</h2>
+        
+        <div class="tourney-config">
+            <div class="input-group">
+                <label>Prix d'entrée (Buy-in) :</label>
+                <input type="number" id="tourney-buyin" value="10" min="1"> €
+            </div>
+            <div class="input-group">
+                <label>Jetons de départ :</label>
+                <input type="number" id="tourney-chips" value="1000" min="100">
+            </div>
+        </div>
+
+        <!-- Ajout des joueurs au tournoi -->
+        <div id="t-players-setup-list"></div>
+        <div class="input-group" style="margin-top: 20px;">
+            <input type="text" id="t-new-player-name" placeholder="Nom du joueur">
+            <button class="btn-action" onclick="addTourneyPlayer()">Inscrire</button>
+        </div>
+
+        <div class="blinds-box" style="margin-top: 20px;">
+            <label>Vitesse : </label>
+            <select id="tourney-speed">
+                <option value="12">Turbo (12 min)</option>
+                <option value="20" selected>Normal (20 min)</option>
+                <option value="30">Deepstack (30 min)</option>
+            </select>
+        </div>
+
+        <button class="btn-primary" onclick="startTournament()">▶️ Lancer le Tournoi</button>
+    </div>
+
+    <!-- Écran 5 : Chronomètre Tournoi Actif -->
+    <div id="active-tournament" class="hidden">
+        <button class="btn-back" onclick="if(confirm('Quitter le tournoi en cours ?')) location.reload()">🛑 Quitter</button>
+        
+        <div class="tourney-stats">
+            <div class="stat-box">
+                <span class="stat-label">Prize Pool</span>
+                <span class="stat-value" id="stat-prizepool">0 €</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Joueurs In</span>
+                <span class="stat-value" id="stat-players">0 / 0</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Stack Moyen</span>
+                <span class="stat-value" id="stat-avg">0</span>
+            </div>
+        </div>
+
+        <div class="timer-box">
+            <h3 id="current-blinds-display">Blindes : 5 / 10</h3>
+            <div id="time-display">20:00</div>
+            <p class="next-level">Prochain niveau : <span id="next-blinds-display">10 / 20</span></p>
+        </div>
+        <div class="timer-controls">
+            <button class="btn-action" onclick="toggleTimer()" id="play-pause-btn">⏸️ Pause</button>
+            <button class="btn-action" onclick="nextLevel()">⏭️ Niveau Suivant</button>
+        </div>
+
+        <!-- Liste des joueurs en direct pour les recaves/éliminations -->
+        <h3>Gestion des joueurs</h3>
+        <div id="t-live-players-list"></div>
+
+        <button class="btn-primary" onclick="endTournament()">🚨 Fin de Tournoi : Répartir le Prize Pool</button>
+    </div>
+
+    <!-- Écran 6 : Fin de Tournoi -->
+    <div id="end-tournament" class="hidden">
+        <h2>Répartition du Prize Pool</h2>
+        <p>Entrez les gains (arrangements) pour les gagnants. Laissez 0 pour les perdants.</p>
+        <h3 style="color: #00ff33;">Cagnotte totale à diviser : <span id="final-prizepool-display">0</span> €</h3>
+        
+        <div id="t-final-payouts"></div>
+        
+        <button class="btn-primary" onclick="calculateTourneyDebts()">💸 Calculer qui paye qui</button>
+        <div id="t-results"></div>
+        <button class="btn-action" onclick="location.reload()" style="margin-top: 20px;">Menu Principal</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "Poker Arlon Hold'em",
+  "short_name": "Poker Arlon",
+  "description": "Application de suivi pour Cash Game et Tournois",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#d90429",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
