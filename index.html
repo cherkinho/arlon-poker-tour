@@ -2,7 +2,6 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <!-- LA LIGNE MAGIQUE POUR ADAPTER À L'ÉCRAN DU TÉLÉPHONE : -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
     <title>Poker Arlon Hold'em</title>
@@ -15,10 +14,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- AJOUT DE 'object-fit: cover;' POUR NE PLUS ÉTIRER LE LOGO -->
-    <img src="logo.png" alt="Logo Arlon Poker Tour" style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%; margin-top: 15px; box-shadow: 0 0 15px rgba(217, 4, 41, 0.5);">
-    
-    <h1>♠️ Poker Arlon Hold'em ♥️</h1>
+    <!-- Titre redimensionné automatiquement pour mobile -->
+    <h1 style="font-size: clamp(24px, 8vw, 55px); white-space: nowrap; margin-top: 30px; margin-bottom: 30px;">♠️ Poker Arlon Hold'em ♥️</h1>
     
     <!-- Écran 1 : Menu Principal -->
     <div id="menu">
@@ -28,8 +25,7 @@
         <button class="btn-menu" onclick="showSection('rules-section')" style="border-color: #f7b500; color: #f7b500;">📜 Règles du jeu</button>
     </div>
 
-    <!-- La suite de ton code (règles, cash game, etc.) reste ici en dessous... -->
-    <!-- Écran : Règles du jeu (NOUVEAU) -->
+    <!-- Écran : Règles du jeu -->
     <div id="rules-section" class="hidden">
         <button class="btn-back" onclick="showSection('menu')">⬅️ Retour</button>
         <h2>Règles & Variantes</h2>
@@ -71,7 +67,7 @@
         </div>
     </div>
 
-    <!-- Écran 2 : Cash Game (Le reste de ton code original reste identique à partir d'ici) -->
+    <!-- Écran 2 : Cash Game -->
     <div id="setup-cash" class="hidden">
         <button class="btn-back" onclick="showSection('menu')">⬅️ Retour</button>
         <h2>Cash Game - La Table</h2>
@@ -80,8 +76,11 @@
             <label>Blindes : </label>
             <select id="blinds-select">
                 <option value="0.01/0.02">0.01 € / 0.02 €</option>
+                <option value="0.05/0.10">0.05 € / 0.10 €</option>
                 <option value="0.10/0.20">0.10 € / 0.20 €</option>
                 <option value="0.25/0.50">0.25 € / 0.50 €</option>
+                <option value="0.50/1.00">0.50 € / 1.00 €</option>
+                <option value="1.00/2.00">1.00 € / 2.00 €</option>
             </select>
         </div>
         
